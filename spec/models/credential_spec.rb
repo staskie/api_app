@@ -8,21 +8,21 @@ describe Credential do
       FactoryGirl.create(:credential, uuid: "u1-0001", secret_token: "t1-0001")
     end
 
-    context "uuid and secret_token are correct" do
-      it "authenticates request if uuid and secret_token is provided" do
+    context "when uuid and secret_token are correct" do
+      it "authenticates the request" do
         Credential.authenticated?("u1-0001", "t1-0001").should be_true
       end
     end
 
-    context "uuid or secret_token are invalid" do
-      it "does NOT authenticate request if uuid is invalid" do
+    context "when uuid or secret_token are invalid" do
+      it "does NOT authenticate request for invalid uuid" do
         Credential.authenticated?("invalid-0001", "t1-0001").should be_false
       end
-      it "does NOT authenticate request if secret_token is invalid" do
+      it "does NOT authenticate request for invalid secret token" do
         Credential.authenticated?("u1-0001", "invalid-0001").should be_false
       end
 
-      it "does NOT authenticate reqeust if uuid and secret_token is missing" do
+      it "does NOT authenticate reqeust for missing uuid and secret token" do
         Credential.authenticated?(nil, nil).should be_false
       end
     end

@@ -9,7 +9,7 @@ describe Api::UsersController, :type => :controller do
   end
 
   describe "GET /api/users" do
-    it "returns json format" do
+    it "responds with json format" do
       get 'index', :format => :json
       response.header['Content-Type'].should include 'application/json'
     end
@@ -39,13 +39,13 @@ describe Api::UsersController, :type => :controller do
     end
 
     describe "POST /api/users" do
-      it "creates a new user" do
+      it "creates a new user for valid parameters" do
         expect {
           post 'create', _params.merge(:user => FactoryGirl.attributes_for(:user))
         }.to change(User, :count).by(1)
       end
 
-      it "doesn't create error when user is not valid" do
+      it "doesn't create a user for invalid parameters" do
         expect {
           post 'create', _params.merge(:user => FactoryGirl.attributes_for(:invalid_user))
         }.to_not change(User, :count)
@@ -53,21 +53,21 @@ describe Api::UsersController, :type => :controller do
     end
 
     describe "GET /api/users/:id" do
-      it "shows user" do
+      it "shows a user" do
         get 'show', _params.merge(:id => @user)
         json_response_body.should include("first_name" => @user.first_name)
       end
     end
 
     describe "PUT /api/users/:id" do
-      it "updates user" do
+      it "updates a user" do
         put 'update', _params.merge(:id => @user, :user => {first_name: "Kate"})
         json_response_body.should include("first_name" => "Kate")
       end
     end
 
     describe "DELETE /api/users/:id" do
-      it "deletes user" do
+      it "deletes a user" do
         delete 'destroy', _params.merge(:id => @user)
         json_response_body.should == {"message" => "Record removed"}
       end
